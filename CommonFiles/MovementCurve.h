@@ -1,6 +1,7 @@
 #ifndef MOVEMENTCURVE_H
 #define MOVEMENTCURVE_H
 
+#include <QVector3D>
 #include "TargetSnapshot.h"
 #include "InterpolationFunction.h"
 #include <QVector>
@@ -15,18 +16,18 @@ class MovementCurve {
         InterpolationFunction* zFunction;
     public:
         MovementCurve();
-        MovementCurve(const QVector<QPair<double, Vector3D> >& points);
+        MovementCurve(const QVector<QPair<double, QVector3D> >& points);
         MovementCurve(const MovementCurve& copyThis);
 
         ~MovementCurve();
 
         void addPoint(double t, double x, double y, double z);
-        void addPoint(double t, const Vector3D& point);
-        void addPoints(const QVector<QPair<double, Vector3D> >& points);
+        void addPoint(double t, const QVector3D& point);
+        void addPoints(const QVector<QPair<double, QVector3D> >& points);
         void deletePoint(int index);
         void clearPoints();
         int getPointsCount() const;
-        QPair<double, Vector3D> getPointAt(int index) const;
+        QPair<double, QVector3D> getPointAt(int index) const;
         TargetSnapshot interpolate(double t) const;
         TargetSnapshot operator() (double t) const;
 
@@ -46,7 +47,7 @@ MovementCurve<Interpolator>::MovementCurve(const MovementCurve &copyThis) : xFun
 }
 
 template <typename Interpolator>
-MovementCurve<Interpolator>::MovementCurve(const QVector<QPair<double, Vector3D> >& points) : MovementCurve<Interpolator>()
+MovementCurve<Interpolator>::MovementCurve(const QVector<QPair<double, QVector3D> >& points) : MovementCurve<Interpolator>()
 {
     addPoints(points);
 }
@@ -66,20 +67,20 @@ void MovementCurve<Interpolator>::addPoint(double t, double x, double y, double 
 }
 
 template <typename Interpolator>
-void MovementCurve<Interpolator>::addPoint(double t, const Vector3D& point)
+void MovementCurve<Interpolator>::addPoint(double t, const QVector3D& point)
 {
-    xFunction->addPoint(t, point.getX());
-    yFunction->addPoint(t, point.getY());
-    zFunction->addPoint(t, point.getZ());
+    xFunction->addPoint(t, point.x());
+    yFunction->addPoint(t, point.y());
+    zFunction->addPoint(t, point.z());
 }
 
 template <typename Interpolator>
-void MovementCurve<Interpolator>::addPoints(const QVector<QPair<double, Vector3D> >& points)
+void MovementCurve<Interpolator>::addPoints(const QVector<QPair<double, QVector3D> >& points)
 {
-    for (QVector<QPair<double, Vector3D> >::const_iterator it = points.begin(); it != points.end(); ++it) {
-        xFunction->addPoint(it->first, it->second.getX());
-        yFunction->addPoint(it->first, it->second.getY());
-        zFunction->addPoint(it->first, it->second.getZ());
+    for (QVector<QPair<double, QVector3D> >::const_iterator it = points.begin(); it != points.end(); ++it) {
+        xFunction->addPoint(it->first, it->second.x());
+        yFunction->addPoint(it->first, it->second.y());
+        zFunction->addPoint(it->first, it->second.z());
     }
 }
 
@@ -106,18 +107,18 @@ int MovementCurve<Interpolator>::getPointsCount() const
 }
 
 template <typename Interpolator>
-QPair<double, Vector3D> MovementCurve<Interpolator>::getPointAt(int index) const
+QPair<double, QVector3D> MovementCurve<Interpolator>::getPointAt(int index) const
 {
     double t = xFunction->getPointAt(index).first;
 
-    Vector3D resVector
+    QVector3D resVector
         (
             xFunction->getPointAt(index).second,
             yFunction->getPointAt(index).second,
             zFunction->getPointAt(index).second
         );
 
-    QPair <double, Vector3D> res = qMakePair<double, Vector3D>
+    QPair <double, QVector3D> res = qMakePair<double, QVector3D>
         (
             t,
             resVector
@@ -130,8 +131,8 @@ template <typename Interpolator>
 TargetSnapshot MovementCurve<Interpolator>::interpolate(double t) const {
     TargetSnapshot res =
         {
-            Vector3D(xFunction->interpolate(t), yFunction->interpolate(t), zFunction->interpolate(t)),
-            Vector3D(xFunction->interpolate(t + 1) - xFunction->interpolate(t), yFunction->interpolate(t + 1) - yFunction->interpolate(t), zFunction->interpolate(t + 1) - zFunction->interpolate(t))
+            QVector3D(xFunction->interpolate(t), yFunction->interpolate(t), zFunction->interpolate(t)),
+            QVector3D(xFunction->interpolate(t + 1) - xFunction->interpolate(t), yFunction->interpolate(t + 1) - yFunction->interpolate(t), zFunction->interpolate(t + 1) - zFunction->interpolate(t))
         };
     return res;
 }

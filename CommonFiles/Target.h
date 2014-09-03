@@ -1,7 +1,7 @@
 #ifndef TARGET_H
 #define TARGET_H
 
-#include "Geometry.h"
+#include <QVector3D>
 #include "MovementCurve.h"
 #include "TargetSnapshot.h"
 #include "LagrangeInterpolation.h"
@@ -9,11 +9,11 @@
 template <typename Interpolator = LagrangeInterpolationFunction>
 class Target {
     private:
-        Vector3D startingLocation;
+        QVector3D startingLocation;
         MovementCurve<Interpolator> trajectory;
 
     public:
-        Target(Vector3D startingLocation, MovementCurve<Interpolator> trajectory);
+        Target(QVector3D startingLocation, MovementCurve<Interpolator> trajectory);
 
         TargetSnapshot makeSnapshot(double t) const;
 };
@@ -22,7 +22,7 @@ class Target {
 
 
 template <typename Interpolator>
-Target<Interpolator>::Target(Vector3D startingLocation, MovementCurve<Interpolator> trajectory) : startingLocation(startingLocation), trajectory(trajectory)
+Target<Interpolator>::Target(QVector3D startingLocation, MovementCurve<Interpolator> trajectory) : startingLocation(startingLocation), trajectory(trajectory)
 {
 }
 

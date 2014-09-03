@@ -1,0 +1,12 @@
+CombatSituationClient:
+
+
+CombatSituationServer:
+
+
+CombatSituationEditor
+
+
+CommonFiles:
+Добавить реализацию боевой обстановки.
+Добавить структуру запроса у сервера куска "зрения".

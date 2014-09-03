@@ -48,7 +48,7 @@ double InterpolationFunction::operator()(double at) const
 
 QDataStream& operator<<(QDataStream& out, const InterpolationFunction& b)
 {
-    out << (&b)->points;
+    out << b.points;
 
     return out;
 }

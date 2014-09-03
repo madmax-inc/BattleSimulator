@@ -1,6 +1,5 @@
 #include "../../CommonFiles/MovementCurve.h"
 #include "../../CommonFiles/LagrangeInterpolation.h"
-#include "../../CommonFiles/Geometry.h"
 #include "../../CommonFiles/TargetSnapshot.h"
 #include <iostream>
 
@@ -17,8 +16,8 @@ int main() {
     TargetSnapshot a = curve(2);
     TargetSnapshot b = curve(2.5);
 
-    cout << a.position.getX() << " " << a.position.getY() << " " << a.position.getZ() << endl;
-    cout << b.position.getX() << " " << b.position.getY() << " " << b.position.getZ() << endl;
+    cout << a.position.x() << " " << a.position.y() << " " << a.position.z() << endl;
+    cout << b.position.x() << " " << b.position.y() << " " << b.position.z() << endl;
 
     return 0;
 }

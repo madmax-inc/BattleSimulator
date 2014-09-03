@@ -1,6 +1,7 @@
 #ifndef INTERPOLATIONFUNCTION_H
 #define INTERPOLATIONFUNCTION_H
 
+#include <QDataStream>
 #include <QVector>
 #include <QPair>
 

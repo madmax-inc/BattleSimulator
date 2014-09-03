@@ -1,11 +1,11 @@
 #ifndef TARGETSNAPSHOT_H
 #define TARGETSNAPSHOT_H
 
-#include "Geometry.h"
+#include <QVector3D>
 
 struct TargetSnapshot {
-    Vector3D position;
-    Vector3D velocity;
+    QVector3D position;
+    QVector3D velocity;
 };
 
 struct TargetEnrichedSnapshot {

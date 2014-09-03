@@ -9,11 +9,11 @@
 template <typename Interpolator = LagrangeInterpolationFunction>
 class Target {
     private:
-        Vector3D<double> startingLocation;
+        Vector3D startingLocation;
         MovementCurve<Interpolator> trajectory;
 
     public:
-        Target(Vector3D<double> startingLocation, MovementCurve<Interpolator> trajectory);
+        Target(Vector3D startingLocation, MovementCurve<Interpolator> trajectory);
 
         TargetSnapshot makeSnapshot(double t) const;
 };
@@ -22,7 +22,7 @@ class Target {
 
 
 template <typename Interpolator>
-Target<Interpolator>::Target(Vector3D<double> startingLocation, MovementCurve<Interpolator> trajectory) : startingLocation(startingLocation), trajectory(trajectory)
+Target<Interpolator>::Target(Vector3D startingLocation, MovementCurve<Interpolator> trajectory) : startingLocation(startingLocation), trajectory(trajectory)
 {
 }
 

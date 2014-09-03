@@ -4,8 +4,8 @@
 #include "Geometry.h"
 
 struct TargetSnapshot {
-    Vector3D<double> position;
-    Vector3D<double> velocity;
+    Vector3D position;
+    Vector3D velocity;
 };
 
 struct TargetEnrichedSnapshot {

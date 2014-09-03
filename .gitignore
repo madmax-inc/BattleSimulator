@@ -1,0 +1,7 @@
+# Qt
+*.pro
+*.pro.user
+*.autosave
+*.o
+*.so
+build-*

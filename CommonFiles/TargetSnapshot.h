@@ -18,7 +18,7 @@ struct TargetEnrichedSnapshot {
     int sourceNo;
     int inSourceIndex;
     int priority;
-    unsigned long lastSeenTime;
+    double lastSeenTime;//FIX ME! unsigned long
 };
 
 QDataStream& operator << (QDataStream& out, const TargetEnrichedSnapshot& target);

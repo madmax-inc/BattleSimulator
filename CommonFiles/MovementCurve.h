@@ -32,8 +32,8 @@ class MovementCurve {
         TargetSnapshot operator() (double t) const;
 
         //Serialization
-        friend QDataStream& operator<<(QDataStream& out, const MovementCurve<Interpolator>& b);
-        friend QDataStream& operator>>(QDataStream& in, MovementCurve<Interpolator>& b);
+        template <typename T> friend QDataStream& operator<<(QDataStream& out, const MovementCurve<T>& b);
+        template <typename T> friend QDataStream& operator>>(QDataStream& in, MovementCurve<T>& b);
 };
 
 template <typename Interpolator>
@@ -41,8 +41,9 @@ MovementCurve<Interpolator>::MovementCurve() : xFunction(new Interpolator()), yF
 {
 }
 
+
 template <typename Interpolator>
-MovementCurve<Interpolator>::MovementCurve(const MovementCurve &copyThis) : xFunction(new Interpolator(copyThis.xFunction)), yFunction(new Interpolator(copyThis.yFunction)), zFunction(new Interpolator(copyThis.zFunction))
+MovementCurve<Interpolator>::MovementCurve(const MovementCurve &copyThis) : xFunction(new Interpolator(*copyThis.xFunction)), yFunction(new Interpolator(*copyThis.yFunction)), zFunction(new Interpolator(*copyThis.zFunction))
 {
 }
 
@@ -145,16 +146,16 @@ TargetSnapshot MovementCurve<Interpolator>::operator()(double t) const
 
 
 //Serialization override
-template <typename Interpolator>
-QDataStream& operator<<(QDataStream& out, const MovementCurve<Interpolator>& b)
+template <typename T>
+QDataStream& operator<<(QDataStream& out, const MovementCurve<T>& b)
 {
     out << *b.xFunction << *b.yFunction << *b.zFunction;
 
     return out;
 }
 
-template <typename Interpolator>
-QDataStream& operator>>(QDataStream& in, MovementCurve<Interpolator>& b)
+template <typename T>
+QDataStream& operator>>(QDataStream& in, MovementCurve<T>& b)
 {
     in >> *b.xFunction >> *b.yFunction >> *b.zFunction;
 

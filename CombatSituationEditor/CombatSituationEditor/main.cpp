@@ -1,23 +1,31 @@
 #include "../../CommonFiles/MovementCurve.h"
 #include "../../CommonFiles/LagrangeInterpolation.h"
+#include "../../CommonFiles/Target.h"
 #include "../../CommonFiles/TargetSnapshot.h"
+#include "../../CommonFiles/CombatSituation.h"
 #include <iostream>
+#include <QCoreApplication>
 
 using namespace std;
 
-int main() {
+
+int main(int argc, char** argv) {
+    QCoreApplication app(argc, argv);
+
     MovementCurve<LagrangeInterpolationFunction> curve;
 
     curve.addPoint(0, 1, 2, 3);
-    curve.addPoint(1, 21, -2, 53);
-    curve.addPoint(2, 12, 0, 11);
-    curve.addPoint(3, 6, 8, 57);
+    curve.addPoint(10000, 21, -2, 53);
+    curve.addPoint(20000, 12, 0, 11);
+    curve.addPoint(30000, 6, 8, 57);
 
-    TargetSnapshot a = curve(2);
-    TargetSnapshot b = curve(2.5);
+    Target<LagrangeInterpolationFunction> t1(QVector3D(1, 2, 3), curve);
 
-    cout << a.position.x() << " " << a.position.y() << " " << a.position.z() << endl;
-    cout << b.position.x() << " " << b.position.y() << " " << b.position.z() << endl;
+    CombatSituation sit(30000, 25);
 
-    return 0;
+    sit.addTarget(t1);
+
+    sit.start();
+
+    return app.exec();
 }

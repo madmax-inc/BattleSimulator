@@ -10,7 +10,7 @@ QDataStream& operator << (QDataStream& out, const TargetsQuery& target)
     return out;
 }
 
-QDataStream& operator << (QDataStream& in, TargetsQuery& target)
+QDataStream& operator >> (QDataStream& in, TargetsQuery& target)
 {
     in >> target.owner;
     in >> target.angle;

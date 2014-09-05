@@ -30,4 +30,4 @@ private:
     void                     sendToClient(QTcpSocket* socket, const QVector <TargetSnapshot>& targets);
 };
 
-#endif // TCPSERVER_Ht
+#endif // TCPSERVER_H

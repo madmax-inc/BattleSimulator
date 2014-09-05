@@ -5,6 +5,10 @@
 
 class TargetsContainer {
     public:
+        virtual ~TargetsContainer() {
+
+        }
+
         virtual TargetSnapshot getTargetSnapshot(int index) const = 0;
         virtual int getTargetsCount() const = 0;
 };

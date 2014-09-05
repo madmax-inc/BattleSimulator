@@ -8,6 +8,9 @@ class LagrangeInterpolationFunction : public InterpolationFunction {
         LagrangeInterpolationFunction();
         LagrangeInterpolationFunction(const QVector<QPair<double, double> >& inPoints);
         LagrangeInterpolationFunction(const InterpolationFunction& copyThis);
+        ~LagrangeInterpolationFunction() {
+
+        }
 
         double interpolate(double at) const;
 };

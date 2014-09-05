@@ -12,6 +12,9 @@ class InterpolationFunction {
         InterpolationFunction();
         InterpolationFunction(const QVector<QPair<double, double> >& inPoints);
         InterpolationFunction(const InterpolationFunction& copyThis);
+        virtual ~InterpolationFunction() {
+
+        }
 
         void addPoint(double argument, double value);
         void addPoints(const QVector<QPair<double, double> >& inPoints);

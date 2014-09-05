@@ -1,4 +1,4 @@
-#include <QApplication>
+/*#include <QApplication>
 #include <QFile>
 #include <QDataStream>
 #include "../../CommonFiles/CombatSituation.h"
@@ -22,10 +22,11 @@ int main(int argc, char** argv) {
 
     sit.addTarget(tar1);
 
-    QFile file("TestSituation.sit");
+    QFile file("test.bin");
 
     file.open(QFile::WriteOnly);
     QDataStream stream(&file);
+    stream.setVersion(QDataStream::Qt_4_7);
 
     stream << sit;
 
@@ -33,4 +34,37 @@ int main(int argc, char** argv) {
 
 
     return 0;
+}*/
+
+
+#include <QCoreApplication>
+#include <QFile>
+#include <QDataStream>
+#include <QTimer>
+#include "../../CommonFiles/CombatSituation.h"
+#include "../../CommonFiles/Target.h"
+#include "../../CommonFiles/MovementCurve.h"
+#include "../../CommonFiles/LagrangeInterpolation.h"
+
+
+
+int main(int argc, char** argv) {
+    //QCoreApplication app(argc, argv);
+    CombatSituation sit;
+    Target<LagrangeInterpolationFunction> tar;
+
+    QFile file("test.bin");
+
+    file.open(QFile::ReadOnly);
+    QDataStream stream(&file);
+    stream.setVersion(QDataStream::Qt_4_7);
+
+    stream >> sit;
+    //stream >> tar;
+
+    file.close();
+
+
+    return 0;
 }
+

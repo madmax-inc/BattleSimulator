@@ -27,6 +27,9 @@ class CombatSituation : public QObject, public TargetsContainer {
     public:
         CombatSituation();
         CombatSituation(quint32 maxTime);
+        ~CombatSituation() {
+
+        }
 
         bool start();
         bool pause();

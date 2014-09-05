@@ -18,6 +18,7 @@ class MovementCurve {
         MovementCurve();
         MovementCurve(const QVector<QPair<double, QVector3D> >& points);
         MovementCurve(const MovementCurve& copyThis);
+        MovementCurve& operator=(const MovementCurve& copythis);
 
         ~MovementCurve();
 
@@ -51,6 +52,23 @@ template <typename Interpolator>
 MovementCurve<Interpolator>::MovementCurve(const QVector<QPair<double, QVector3D> >& points) : MovementCurve<Interpolator>()
 {
     addPoints(points);
+}
+
+template <typename Interpolator>
+MovementCurve<Interpolator>& MovementCurve<Interpolator>::operator=(const MovementCurve<Interpolator>& copythis) {
+    if (this == &copythis) {
+        return *this;
+    }
+
+    delete xFunction;
+    delete yFunction;
+    delete zFunction;
+
+    xFunction = new Interpolator(*copythis.xFunction);
+    yFunction = new Interpolator(*copythis.yFunction);
+    zFunction = new Interpolator(*copythis.zFunction);
+
+    return *this;
 }
 
 template <typename Interpolator>

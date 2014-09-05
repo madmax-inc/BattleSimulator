@@ -1,8 +1,9 @@
 #include "CombatSituation.h"
 
 
-CombatSituation::CombatSituation() {
-
+CombatSituation::CombatSituation() : QObject(), TargetsContainer(), animationTimer(), endingTime(0), state(STOPPED)
+{
+    QObject::connect(&animationTimer, SIGNAL(timeout()), this, SLOT(onTimerFired()));
 }
 
 CombatSituation::CombatSituation(quint32 maxTime) : QObject(), TargetsContainer(), animationTimer(), endingTime(maxTime), state(STOPPED)

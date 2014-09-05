@@ -1,7 +1,6 @@
 #ifndef TARGET_H
 #define TARGET_H
 
-#include <QVector3D>
 #include <QDataStream>
 #include "MovementCurve.h"
 #include "TargetSnapshot.h"
@@ -10,12 +9,11 @@
 template <typename Interpolator = LagrangeInterpolationFunction>
 class Target {
     private:
-        QVector3D startingLocation;
         MovementCurve<Interpolator> trajectory;
 
     public:
         Target();
-        Target(QVector3D startingLocation, MovementCurve<Interpolator> trajectory);
+        Target(MovementCurve<Interpolator> trajectory);
         Target(const Target& copyThis);
 
         TargetSnapshot makeSnapshot(double t) const;
@@ -29,12 +27,12 @@ template <typename Interpolator>
 Target<Interpolator>::Target() {}
 
 template <typename Interpolator>
-Target<Interpolator>::Target(QVector3D startingLocation, MovementCurve<Interpolator> trajectory) : startingLocation(startingLocation), trajectory(trajectory)
+Target<Interpolator>::Target(MovementCurve<Interpolator> trajectory) : trajectory(trajectory)
 {
 }
 
 template <typename Interpolator>
-Target<Interpolator>::Target(const Target& copyThis) : startingLocation(copyThis.startingLocation), trajectory(copyThis.trajectory)
+Target<Interpolator>::Target(const Target& copyThis) : trajectory(copyThis.trajectory)
 {
 }
 
@@ -46,14 +44,14 @@ TargetSnapshot Target<Interpolator>::makeSnapshot(double t) const
 
 template <typename T>
 QDataStream& operator<<(QDataStream& out, const Target<T>& b) {
-    out << b.startingLocation << b.trajectory;
+    out << b.trajectory;
 
     return out;
 }
 
 template <typename T>
 QDataStream& operator>>(QDataStream& in, Target<T>& b) {
-    in >> b.startingLocation >> b.trajectory;
+    in >> b.trajectory;
 
     return in;
 }

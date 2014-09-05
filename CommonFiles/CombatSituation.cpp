@@ -1,7 +1,11 @@
 #include "CombatSituation.h"
 
 
-CombatSituation::CombatSituation(double maxTime, double interval) : QObject(), TargetsContainer(), animationTimer(), endingTime(maxTime), timerInterval(interval), state(STOPPED)
+CombatSituation::CombatSituation() {
+
+}
+
+CombatSituation::CombatSituation(quint32 maxTime) : QObject(), TargetsContainer(), animationTimer(), endingTime(maxTime), state(STOPPED)
 {
     QObject::connect(&animationTimer, SIGNAL(timeout()), this, SLOT(onTimerFired()));
 }
@@ -79,14 +83,14 @@ int CombatSituation::getTargetsCount() const
 
 QDataStream& operator<<(QDataStream& out, const CombatSituation& b)
 {
-    out << b.targets;
+    out << b.endingTime << b.targets;
 
     return out;
 }
 
 QDataStream& operator>>(QDataStream& in, CombatSituation& b)
 {
-    in >> b.targets;
+    in >> b.endingTime >> b.targets;
 
     return in;
 }

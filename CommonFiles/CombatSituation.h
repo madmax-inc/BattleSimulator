@@ -19,13 +19,14 @@ class CombatSituation : public QObject, public TargetsContainer {
     private:
         QVector<Target<LagrangeInterpolationFunction> > targets;
         QTimer animationTimer;
-        double endingTime;
-        double currentTime;
-        double timerInterval;
+        quint32 endingTime;
+        quint32 currentTime;
+        const int timerInterval = 25;
         AnimationState state;
 
     public:
-        CombatSituation(double maxTime, double interval);
+        CombatSituation();
+        CombatSituation(quint32 maxTime);
 
         bool start();
         bool pause();

@@ -1,26 +1,30 @@
 #ifndef TARGETSCONTAINERPAINTERWIDGET_H
 #define TARGETSCONTAINERPAINTERWIDGET_H
 
-#include <QWidget>
-#include <QRect>
-#include <QPaintEvent>
+#include <QGraphicsView>
+#include <QGraphicsScene>
+#include <QTimer>
 #include "../../CommonFiles/TargetsContainer.h"
 
-class TargetsContainerPainterWidget : public QWidget
+class TargetsContainerPainterWidget : public QGraphicsView
 {
     Q_OBJECT
     private:
-        QRect displayArea;
-        const TargetsContainer& container;
-    public:
-        TargetsContainerPainterWidget(QRect area, const TargetsContainer& contain, QWidget *parent = 0);
+        const TargetsContainer* container;
 
-    protected:
-        void paintEvent(QPaintEvent* event);
+        QTimer timer;
+        QGraphicsScene scene;
+
+    public:
+        TargetsContainerPainterWidget(const TargetsContainer* contain, QWidget *parent = 0);
+
+    private:
+        void checkAndAddItems();
 
     signals:
 
     public slots:
+        void moveTargets();
 
 };
 

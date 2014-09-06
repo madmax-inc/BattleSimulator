@@ -1,70 +1,28 @@
-/*#include <QApplication>
+#include <QApplication>
 #include <QFile>
 #include <QDataStream>
+#include "TargetsContainerPainterWidget.h"
 #include "../../CommonFiles/CombatSituation.h"
-#include "../../CommonFiles/Target.h"
-#include "../../CommonFiles/MovementCurve.h"
-#include "../../CommonFiles/LagrangeInterpolation.h"
 
 int main(int argc, char** argv) {
-    //QApplication app(argc, argv);
-
-    MovementCurve<LagrangeInterpolationFunction> curve;
-
-    curve.addPoint(0, 1, 2, 3);
-    curve.addPoint(10000, 10, -2, 15);
-    curve.addPoint(40000, 34, 90, 0);
-    curve.addPoint(60000, 15, -11, 72);
-
-    Target<LagrangeInterpolationFunction> tar1(curve);
-
-    CombatSituation sit(60000);
-
-    sit.addTarget(tar1);
-
-    QFile file("test.bin");
-
-    file.open(QFile::WriteOnly);
-    QDataStream stream(&file);
-    stream.setVersion(QDataStream::Qt_4_7);
-
-    stream << sit;
-
-    file.close();
-
-
-    return 0;
-}*/
-
-
-#include <QCoreApplication>
-#include <QFile>
-#include <QDataStream>
-#include <QTimer>
-#include "../../CommonFiles/CombatSituation.h"
-#include "../../CommonFiles/Target.h"
-#include "../../CommonFiles/MovementCurve.h"
-#include "../../CommonFiles/LagrangeInterpolation.h"
-
-
-
-int main(int argc, char** argv) {
-    //QCoreApplication app(argc, argv);
-    CombatSituation sit;
-    Target<LagrangeInterpolationFunction> tar;
+    QApplication app(argc, argv);
 
     QFile file("test.bin");
 
     file.open(QFile::ReadOnly);
     QDataStream stream(&file);
-    stream.setVersion(QDataStream::Qt_4_7);
 
+    CombatSituation sit;
     stream >> sit;
-    //stream >> tar;
 
     file.close();
 
 
-    return 0;
-}
+    TargetsContainerPainterWidget p(&sit);
 
+    sit.start();
+
+    p.show();
+
+    return app.exec();
+}

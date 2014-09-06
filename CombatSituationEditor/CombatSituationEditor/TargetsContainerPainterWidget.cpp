@@ -1,14 +1,65 @@
 #include "TargetsContainerPainterWidget.h"
-#include <QPainter>
-#include <QPointF>
+#include "TargetBasicItem.h"
+#include <QList>
+#include <QGraphicsItem>
 #include <cmath>
+#include "../../CommonFiles/TargetSnapshot.h"
 
-TargetsContainerPainterWidget::TargetsContainerPainterWidget(QRect area, const TargetsContainer& contain, QWidget *parent) :
-    QWidget(parent), displayArea(area), container(contain)
+TargetsContainerPainterWidget::TargetsContainerPainterWidget(const TargetsContainer* contain, QWidget *parent) :
+    QGraphicsView(parent), container(contain), scene(this)
 {
+    scene.setSceneRect(-100, -100, 200, 200);
+    setScene(&scene);
+    setRenderHint(QPainter::Antialiasing);
+
+    checkAndAddItems();
+    moveTargets();
+
+    QObject::connect(&timer, SIGNAL(timeout()), this, SLOT(moveTargets()));
+    timer.start(25);
 }
 
+void TargetsContainerPainterWidget::checkAndAddItems()
+{
+    int count = 0;
+    QList<QGraphicsItem*> items = scene.items();
 
+    for (QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); ++it) {
+        TargetBasicItem* targ = dynamic_cast<TargetBasicItem*>(*it);
+
+        if (targ != 0) {
+            count++;
+        }
+    }
+
+    if (count < container->getTargetsCount()) {
+        for (int i = count; i < container->getTargetsCount(); i++) {
+            scene.addItem(new TargetBasicItem(i));
+        }
+
+        moveTargets();
+    }
+}
+
+void TargetsContainerPainterWidget::moveTargets()
+{
+    QList<QGraphicsItem*> items = scene.items();
+
+    for (QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); ++it) {
+        TargetBasicItem* targ = dynamic_cast<TargetBasicItem*>(*it);
+
+        if (targ != 0) {
+            TargetSnapshot snap = container->getTargetSnapshot(targ->getTargetNum());
+
+            float rotationRad = -atan2(-snap.velocity.y(), snap.velocity.x());
+
+            targ->setPos(snap.position.x(), snap.position.y());
+            targ->setRotation(rotationRad*180/3.1415926);
+        }
+    }
+}
+
+/*
 void TargetsContainerPainterWidget::paintEvent(QPaintEvent* event) {
     QPainter painter(this);
 
@@ -40,3 +91,4 @@ void TargetsContainerPainterWidget::paintEvent(QPaintEvent* event) {
         painter.restore();
     }
 }
+*/

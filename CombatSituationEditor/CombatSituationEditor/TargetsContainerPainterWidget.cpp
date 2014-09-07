@@ -3,20 +3,25 @@
 #include <QList>
 #include <QGraphicsItem>
 #include <cmath>
+#include <QDebug>
 #include "../../CommonFiles/TargetSnapshot.h"
 
 TargetsContainerPainterWidget::TargetsContainerPainterWidget(const TargetsContainer* contain, QWidget *parent) :
     QGraphicsView(parent), container(contain), scene(this)
 {
-    scene.setSceneRect(-100, -100, 200, 200);
+    //scene.setSceneRect(-10, -10, 20, 20);
     setScene(&scene);
     setRenderHint(QPainter::Antialiasing);
-
-    checkAndAddItems();
-    moveTargets();
+    scale(5, 5);
 
     QObject::connect(&timer, SIGNAL(timeout()), this, SLOT(moveTargets()));
     timer.start(25);
+}
+
+void TargetsContainerPainterWidget::containerChanged()
+{
+    checkAndAddItems();
+    moveTargets();
 }
 
 void TargetsContainerPainterWidget::checkAndAddItems()
@@ -34,15 +39,21 @@ void TargetsContainerPainterWidget::checkAndAddItems()
 
     if (count < container->getTargetsCount()) {
         for (int i = count; i < container->getTargetsCount(); i++) {
-            scene.addItem(new TargetBasicItem(i));
+            scene.addItem(makeTargetBasicItem(i));
         }
 
         moveTargets();
     }
 }
 
-void TargetsContainerPainterWidget::moveTargets()
+TargetBasicItem *TargetsContainerPainterWidget::makeTargetBasicItem(int number) const
 {
+    return new TargetBasicItem(number);
+}
+
+void TargetsContainerPainterWidget::moveTargets() const
+{
+
     QList<QGraphicsItem*> items = scene.items();
 
     for (QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); ++it) {

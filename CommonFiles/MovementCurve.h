@@ -4,11 +4,12 @@
 #include <QVector3D>
 #include "TargetSnapshot.h"
 #include "InterpolationFunction.h"
+#include "LagrangeInterpolation.h"
 #include <QVector>
 #include <QPair>
 #include <QDataStream>
 
-template <typename Interpolator>
+template <typename Interpolator = LagrangeInterpolationFunction>
 class MovementCurve {
     private:
         InterpolationFunction* xFunction;
@@ -24,6 +25,7 @@ class MovementCurve {
 
         void addPoint(double t, double x, double y, double z);
         void addPoint(double t, const QVector3D& point);
+        void addOrUpdatePoint(double t, const QVector3D& point);
         void addPoints(const QVector<QPair<double, QVector3D> >& points);
         void deletePoint(int index);
         void clearPoints();
@@ -91,6 +93,32 @@ void MovementCurve<Interpolator>::addPoint(double t, const QVector3D& point)
     xFunction->addPoint(t, point.x());
     yFunction->addPoint(t, point.y());
     zFunction->addPoint(t, point.z());
+}
+
+template <typename Interpolator>
+void MovementCurve<Interpolator>::addOrUpdatePoint(double t, const QVector3D &point)
+{
+    //FIX ME! Ахтунг! Ручной поиск точки!
+    const double timeTreshold = 250;
+
+    bool found = false;
+    int pointIndex = 0;
+
+    for (int i = 0; i < getPointsCount(); i++) {
+        QPair<double, QVector3D> point = getPointAt(i);
+
+        if (point.first >= (t - timeTreshold) && point.first <= (t + timeTreshold)) {
+            found = true;
+            pointIndex = i;
+            break;
+        }
+    }
+
+    if (found) {
+        deletePoint(pointIndex);
+    }
+
+    addPoint(t, point);
 }
 
 template <typename Interpolator>

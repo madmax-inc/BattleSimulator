@@ -1,9 +1,11 @@
 #include "TargetBasicItem.h"
 #include <QPen>
 #include <QBrush>
+#include <QDebug>
 
 TargetBasicItem::TargetBasicItem(int tNum) : QGraphicsItem(), targetNum(tNum)
 {
+    //setAcceptedMouseButtons();
 }
 
 int TargetBasicItem::getTargetNum() const {
@@ -12,15 +14,12 @@ int TargetBasicItem::getTargetNum() const {
 
 QRectF TargetBasicItem::boundingRect() const
 {
-    const int multiplier = 20;
-    const qreal adjust = 2;
 
-    return QRectF(-1 * multiplier - adjust, -1 * multiplier - adjust, 3 * multiplier + adjust, 2 * multiplier + adjust);
+    return QRectF(-1 * multiplier - thickness, -1 * multiplier - thickness, 3 * multiplier + thickness, 2 * multiplier + thickness);
 }
 
 void TargetBasicItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    const int multiplier = 20;
     static const QPointF airplane[] =
         {
             QPointF(0, 0),
@@ -31,7 +30,7 @@ void TargetBasicItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 
     QPen pen;
     pen.setColor(QColor(0, 0, 0, 128));
-    pen.setWidthF(4);
+    pen.setWidthF(thickness);
     pen.setJoinStyle(Qt::RoundJoin);
 
     QBrush brush;
@@ -44,3 +43,8 @@ void TargetBasicItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 
     painter->drawPolygon(airplane, 4);
 }
+
+/*void TargetBasicItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    qDebug() << "Pressed on " << targetNum;
+}*/

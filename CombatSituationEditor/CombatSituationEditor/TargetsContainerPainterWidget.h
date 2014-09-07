@@ -5,6 +5,7 @@
 #include <QGraphicsScene>
 #include <QTimer>
 #include "../../CommonFiles/TargetsContainer.h"
+#include "TargetBasicItem.h"
 
 class TargetsContainerPainterWidget : public QGraphicsView
 {
@@ -18,14 +19,18 @@ class TargetsContainerPainterWidget : public QGraphicsView
     public:
         TargetsContainerPainterWidget(const TargetsContainer* contain, QWidget *parent = 0);
 
+        void containerChanged();
+
     private:
         void checkAndAddItems();
+
+    protected:
+        virtual TargetBasicItem* makeTargetBasicItem(int number) const;
 
     signals:
 
     public slots:
-        void moveTargets();
-
+        virtual void moveTargets() const;
 };
 
 #endif // TARGETSCONTAINERPAINTERWIDGET_H

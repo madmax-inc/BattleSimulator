@@ -17,7 +17,7 @@ enum AnimationState {
 class CombatSituation : public QObject, public TargetsContainer {
     Q_OBJECT
     private:
-        QVector<Target<LagrangeInterpolationFunction> > targets;
+        QVector<Target> targets;
         QTimer animationTimer;
         quint32 endingTime;
         quint32 currentTime;
@@ -35,12 +35,18 @@ class CombatSituation : public QObject, public TargetsContainer {
         bool pause();
         bool resume();
         bool stop();
+        bool rewind(quint32 time);
 
         AnimationState getState() const;
 
-        void addTarget(const Target<LagrangeInterpolationFunction>& target);
+        void addTarget(const Target& target);
+        Target& getTarget(int index);
         void clearTargets();
 
+    private:
+        void updateTargets();
+
+    public:
         TargetSnapshot getTargetSnapshot(int index) const;
         int getTargetsCount() const;
 

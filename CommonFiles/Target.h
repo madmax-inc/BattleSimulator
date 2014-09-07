@@ -4,56 +4,25 @@
 #include <QDataStream>
 #include "MovementCurve.h"
 #include "TargetSnapshot.h"
-#include "LagrangeInterpolation.h"
 
-template <typename Interpolator = LagrangeInterpolationFunction>
 class Target {
     private:
-        MovementCurve<Interpolator> trajectory;
+        MovementCurve<> trajectory;
+        quint32 currentTime;
 
     public:
         Target();
-        Target(MovementCurve<Interpolator> trajectory);
+        Target(MovementCurve<> trajectory);
         Target(const Target& copyThis);
 
         TargetSnapshot makeSnapshot(double t) const;
+        TargetSnapshot makeSnapshot() const;
+        MovementCurve<>& getTrajectory();
+        void addOrUpdatePoint(const QVector3D& point);
+        void setCurrentTime(quint32 cTime);
 
-        template <typename T> friend QDataStream& operator<<(QDataStream& out, const Target<T>& b);
-        template <typename T> friend QDataStream& operator>>(QDataStream& in, Target<T>& b);
+        friend QDataStream& operator<<(QDataStream& out, const Target& b);
+        friend QDataStream& operator>>(QDataStream& in, Target& b);
 };
-
-
-template <typename Interpolator>
-Target<Interpolator>::Target() {}
-
-template <typename Interpolator>
-Target<Interpolator>::Target(MovementCurve<Interpolator> trajectory) : trajectory(trajectory)
-{
-}
-
-template <typename Interpolator>
-Target<Interpolator>::Target(const Target& copyThis) : trajectory(copyThis.trajectory)
-{
-}
-
-template <typename Interpolator>
-TargetSnapshot Target<Interpolator>::makeSnapshot(double t) const
-{
-    return trajectory(t);
-}
-
-template <typename T>
-QDataStream& operator<<(QDataStream& out, const Target<T>& b) {
-    out << b.trajectory;
-
-    return out;
-}
-
-template <typename T>
-QDataStream& operator>>(QDataStream& in, Target<T>& b) {
-    in >> b.trajectory;
-
-    return in;
-}
 
 #endif // TARGET_H

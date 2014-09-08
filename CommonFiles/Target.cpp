@@ -15,24 +15,9 @@ TargetSnapshot Target::makeSnapshot(double t) const
     return trajectory(t);
 }
 
-TargetSnapshot Target::makeSnapshot() const
-{
-    return trajectory(currentTime);
-}
-
 MovementCurve<>& Target::getTrajectory()
 {
     return trajectory;
-}
-
-void Target::addOrUpdatePoint(const QVector3D& point)
-{
-    trajectory.addOrUpdatePoint(currentTime, point);
-}
-
-void Target::setCurrentTime(quint32 cTime)
-{
-    currentTime = cTime;
 }
 
 QDataStream& operator<<(QDataStream& out, const Target& b) {

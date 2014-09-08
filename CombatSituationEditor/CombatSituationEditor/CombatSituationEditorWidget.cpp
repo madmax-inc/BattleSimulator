@@ -7,5 +7,5 @@ CombatSituationEditorWidget::CombatSituationEditorWidget(CombatSituation* contai
 
 TargetBasicItem* CombatSituationEditorWidget::makeTargetBasicItem(int number) const
 {
-    return new TargetEditableItem(number, container->getTarget(number));
+    return new TargetEditableItem(number, container->getTarget(number).getTrajectory(), container->getChronometer());
 }

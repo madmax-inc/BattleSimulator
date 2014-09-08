@@ -24,6 +24,7 @@ class InterpolationFunction {
         QPair<double, double> getPointAt(int index) const;
         virtual double interpolate(double at) const = 0;
         double operator() (double at) const;
+        QPair<double, double> calcExtremum(double from, double to, double treshold = 100) const;
 
         //Serialization override
         friend QDataStream& operator<<(QDataStream& out, const InterpolationFunction& b);

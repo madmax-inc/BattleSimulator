@@ -5,6 +5,7 @@
 #include "TargetSnapshot.h"
 #include "InterpolationFunction.h"
 #include "LagrangeInterpolation.h"
+#include "BoundingBox.h"
 #include <QVector>
 #include <QPair>
 #include <QDataStream>
@@ -33,6 +34,7 @@ class MovementCurve {
         QPair<double, QVector3D> getPointAt(int index) const;
         TargetSnapshot interpolate(double t) const;
         TargetSnapshot operator() (double t) const;
+        BoundingBox calcBoundingBox(double from, double to) const;
 
         //Serialization
         template <typename T> friend QDataStream& operator<<(QDataStream& out, const MovementCurve<T>& b);
@@ -188,6 +190,12 @@ template <typename Interpolator>
 TargetSnapshot MovementCurve<Interpolator>::operator()(double t) const
 {
     return interpolate(t);
+}
+
+template <typename Interpolator>
+BoundingBox MovementCurve<Interpolator>::calcBoundingBox(double from, double to) const
+{
+    return BoundingBox(xFunction->calcExtremum(from, to), yFunction->calcExtremum(from, to), zFunction->calcExtremum(from, to));
 }
 
 

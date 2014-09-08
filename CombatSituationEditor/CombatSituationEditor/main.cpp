@@ -1,12 +1,21 @@
 #include <QApplication>
 #include <QFile>
 #include <QDataStream>
-#include "CombatSituationEditorWidget.h"
+#include "CombatSituationEditor.h"
 #include "../../CommonFiles/CombatSituation.h"
 //#include "../../CommonFiles/Target.h"
 //#include "../../CommonFiles/MovementCurve.h"
 
 int main(int argc, char** argv) {
+    QApplication app(argc, argv);
+
+    CombatSituationEditor editor;
+    editor.show();
+
+    return app.exec();
+}
+
+/*int main(int argc, char** argv) {
     QApplication app(argc, argv);
 
     QFile file("../../CommonFiles/situation30_lined.sit");
@@ -26,7 +35,7 @@ int main(int argc, char** argv) {
     p.show();
 
     return app.exec();
-}
+}*/
 
 /*int main() {
     CombatSituation sit(30000);

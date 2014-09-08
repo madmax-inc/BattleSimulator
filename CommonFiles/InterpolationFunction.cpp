@@ -46,6 +46,44 @@ double InterpolationFunction::operator()(double at) const
     return interpolate(at);
 }
 
+QPair<double, double> InterpolationFunction::calcExtremum(double from, double to, double treshold) const
+{
+    enum stage {
+        RAISING,
+        LOWERING
+    };
+
+    double minValue = interpolate(from) < interpolate(to) ? interpolate(from) : interpolate(to);
+    double maxValue = interpolate(from) > interpolate(to) ? interpolate(from) : interpolate(to);
+
+    stage s = interpolate(from) < interpolate(from + treshold) ? RAISING : LOWERING;
+
+    for (double current = from; current <= to; current += treshold) {
+        switch (s) {
+            case RAISING:
+                //Possible maximum
+                if (interpolate(current) > interpolate(current + treshold)) {
+                    if (interpolate(current + treshold/2) > maxValue)
+                        maxValue = interpolate(current + treshold/2);
+
+                    s = LOWERING;
+                }
+                break;
+            case LOWERING:
+                //Possible minimum
+                if (interpolate(current) < interpolate(current + treshold)) {
+                    if (interpolate(current + treshold/2) < minValue)
+                        minValue = interpolate(current + treshold/2);
+
+                    s = RAISING;
+                }
+                break;
+        };
+    }
+
+    return qMakePair<double, double> (minValue, maxValue);
+}
+
 QDataStream& operator<<(QDataStream& out, const InterpolationFunction& b)
 {
     out << b.points;

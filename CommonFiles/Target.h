@@ -8,7 +8,6 @@
 class Target {
     private:
         MovementCurve<> trajectory;
-        quint32 currentTime;
 
     public:
         Target();
@@ -16,10 +15,7 @@ class Target {
         Target(const Target& copyThis);
 
         TargetSnapshot makeSnapshot(double t) const;
-        TargetSnapshot makeSnapshot() const;
         MovementCurve<>& getTrajectory();
-        void addOrUpdatePoint(const QVector3D& point);
-        void setCurrentTime(quint32 cTime);
 
         friend QDataStream& operator<<(QDataStream& out, const Target& b);
         friend QDataStream& operator>>(QDataStream& in, Target& b);

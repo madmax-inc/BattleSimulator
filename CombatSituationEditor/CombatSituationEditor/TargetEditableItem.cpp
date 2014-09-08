@@ -1,7 +1,8 @@
 #include "TargetEditableItem.h"
 #include <QDebug>
+#include <QCursor>
 
-TargetEditableItem::TargetEditableItem(int tNum, Target& assocTarget) : TargetBasicItem(tNum), associatedTarget(assocTarget)
+TargetEditableItem::TargetEditableItem(int tNum, MovementCurve<>& assocCurve, const Chronometer* chron) : TargetBasicItem(tNum), associatedCurve(assocCurve), chronos(chron)
 {
 
 }
@@ -9,15 +10,18 @@ TargetEditableItem::TargetEditableItem(int tNum, Target& assocTarget) : TargetBa
 void TargetEditableItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     qDebug() << "Press event!";
+    setCursor(QCursor(Qt::ClosedHandCursor));
 }
 
 void TargetEditableItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     qDebug() << "Move event!" << event->scenePos();
-    associatedTarget.addOrUpdatePoint(QVector3D(event->scenePos()));
+    associatedCurve.addOrUpdatePoint(chronos->getCurrentTime(), QVector3D(event->scenePos()));
 }
 
 void TargetEditableItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+    setCursor(Qt::OpenHandCursor);
+    setCursor(QCursor(Qt::OpenHandCursor));
     qDebug() << "Release event!";
 }

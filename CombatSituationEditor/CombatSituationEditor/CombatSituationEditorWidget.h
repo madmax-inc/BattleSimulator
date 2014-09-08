@@ -22,16 +22,16 @@ class CombatSituationEditorWidget : public TargetsContainerPainterWidget
         void keyPressEvent(QKeyEvent * event) {
             switch (event->key()) {
                 case Qt::Key_A:
-                    container->start();
+                    container->getChronometer()->start();
                     break;
                 case Qt::Key_S:
-                    container->pause();
+                    container->getChronometer()->pause();
                     break;
                 case Qt::Key_D:
-                    container->resume();
+                    container->getChronometer()->resume();
                     break;
                 case Qt::Key_F:
-                    container->stop();
+                    container->getChronometer()->stop();
                     break;
             };
         }
